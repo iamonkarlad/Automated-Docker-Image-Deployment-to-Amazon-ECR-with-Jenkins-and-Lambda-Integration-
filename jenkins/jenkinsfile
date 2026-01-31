@@ -1,0 +1,33 @@
+pipeline {
+    agent any
+
+    environment {
+        AWS_REGION = "us-east-1"
+        ECR_REPO = "<ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/jenkins-ecr-demo"
+        IMAGE_TAG = "${GIT_COMMIT}"
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/yourname/ecr-jenkins-lambda-terraform.git'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t $ECR_REPO:$IMAGE_TAG app/'
+            }
+        }
+
+        stage('Push to ECR') {
+            steps {
+                sh '''
+                aws ecr get-login-password --region $AWS_REGION |
+                docker login --username AWS --password-stdin $ECR_REPO
+                docker push $ECR_REPO:$IMAGE_TAG
+                '''
+            }
+        }
+    }
+}
