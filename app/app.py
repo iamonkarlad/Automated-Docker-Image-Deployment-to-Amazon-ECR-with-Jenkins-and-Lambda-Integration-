@@ -1,7 +1,7 @@
 from flask import Flask
 app = Flask(__name__)
 
-def handler(event, context):
+def lambda_handler(event, context):
     return {
         "statusCode": 200,
         "body": "Lambda function executed successfully!"
