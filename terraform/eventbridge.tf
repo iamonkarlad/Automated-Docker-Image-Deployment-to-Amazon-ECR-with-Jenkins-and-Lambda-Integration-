@@ -1,7 +1,7 @@
 resource "aws_cloudwatch_event_rule" "ecr_push_rule" {
     name        = "ecr-push-rule"
     description = "Triggers on ECR image push events"
-    event_pattern = jasonencode({
+    event_pattern = jsonencode({
         "source": ["aws.ecr"],
         "detail-type": ["ECR Image Action"],
         "detail": {
@@ -11,5 +11,5 @@ resource "aws_cloudwatch_event_rule" "ecr_push_rule" {
 }
 resource "aws_cloudwatch_event_target" "ecr_push_target" {
     rule      = aws_cloudwatch_event_rule.ecr_push_rule.name
-    arn       = aws_lambda_function.my_lambda.arn
+    arn       = aws_lambda_function.ecr_lambda.arn
 }
