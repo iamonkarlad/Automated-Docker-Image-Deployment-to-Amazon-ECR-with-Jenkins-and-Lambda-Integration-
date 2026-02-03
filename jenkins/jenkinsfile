@@ -11,7 +11,8 @@ pipeline {
 
     stage('Checkout') {
       steps {
-        git 'https://github.com/iamonkarlad/Automated-Docker-Image-Deployment-to-Amazon-ECR-with-Jenkins-and-Lambda-Integration-.git'
+        git credentialsId: 'github-creds',
+        url: 'https://github.com/iamonkarlad/Automated-Docker-Image-Deployment-to-Amazon-ECR-with-Jenkins-and-Lambda-Integration-.git'
       }
     }
 
