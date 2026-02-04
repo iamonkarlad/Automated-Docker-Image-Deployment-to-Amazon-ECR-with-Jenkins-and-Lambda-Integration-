@@ -41,13 +41,15 @@ pipeline {
   }
 
   post {
-    success {
-      sh '''
-      aws lambda invoke \
-        --function-name ecr-post-deploy-lambda \
-        --payload '{"image":"'"$IMAGE_TAG"'"}' output.json
-      '''
-    }
+  success {
+    sh '''
+    aws lambda invoke \
+      --cli-binary-format raw-in-base64-out \
+      --function-name ecr-post-deploy-lambda \
+      --payload '{"image":"'"$IMAGE_TAG"'"}' \
+      output.json
+    '''
   }
 }
+
 
